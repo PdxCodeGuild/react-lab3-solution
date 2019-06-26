@@ -2,6 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import "./App.css";
+import { PostContainer, PostTitle, PostBody, Input } from './App.styled';
+
+const Post = (props) => (
+  <PostContainer {...props}>
+    <PostTitle>{props.post.title}</PostTitle>
+    <PostBody>
+      {props.post.body}
+    </PostBody>
+  </PostContainer>
+)
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -34,20 +44,13 @@ const App = () => {
   const filteredPosts = posts.filter((post) => post.title.includes(filterText));
 
   return (
-    <div>
-      <div>
-        <input type="text" onChange={handleChange} value={filterText} />
-      </div>
+    <>
+      <Input placeholder="Filter posts..." onChange={handleChange} value={filterText} />
       {loading && <div>Loading...</div>}
       {!loading && filteredPosts.map((post) => (
-        <div key={post.id}>
-          <div><strong>{post.title}</strong></div>
-          <p>
-            {post.body}
-          </p>
-        </div>
+        <Post dark key={post.id} post={post} />
       ))}
-    </div>
+    </>
   );
 }
 
