@@ -6,6 +6,7 @@ import "./App.css";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+  const [filterText, setFilterText] = useState('');
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -20,10 +21,25 @@ const App = () => {
     }, 200);
   }, []);
 
+  const handleChange = (event) => {
+    setFilterText(event.target.value);
+  }
+
+  // With function
+  // const filterPosts = () => {
+  //   return posts.filter((post) => post.title.includes(filterText));
+  // }
+
+  // With a variable
+  const filteredPosts = posts.filter((post) => post.title.includes(filterText));
+
   return (
     <div>
+      <div>
+        <input type="text" onChange={handleChange} value={filterText} />
+      </div>
       {loading && <div>Loading...</div>}
-      {!loading && posts.map((post) => (
+      {!loading && filteredPosts.map((post) => (
         <div key={post.id}>
           <div><strong>{post.title}</strong></div>
           <p>
